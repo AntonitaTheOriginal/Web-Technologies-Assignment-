@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Dream Travel Destinations</title>
+
+  <style>
+    :root {
+      --accent: #1e90ff;
+      --muted: #f6f8fb;
+      --card: #ffffff;
+      --shadow: 0 6px 18px rgba(0,0,0,0.08);
+      --radius: 12px;
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #222;
+    }
+
+    /* Background slideshow container */
+    .background-slideshow {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -2;
+      overflow: hidden;
+    }
+    .background-slideshow img {
+      position: absolute;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      animation: fadeSlide 48s infinite;
+      opacity: 0;
+    }
+    .background-slideshow img:nth-child(1) { animation-delay: 0s; }
+    .background-slideshow img:nth-child(2) { animation-delay: 8s; }
+    .background-slideshow img:nth-child(3) { animation-delay: 16s; }
+    .background-slideshow img:nth-child(4) { animation-delay: 24s; }
+    .background-slideshow img:nth-child(5) { animation-delay: 32s; }
+    .background-slideshow img:nth-child(6) { animation-delay: 40s; }
+
+    @keyframes fadeSlide {
+      0% { opacity: 0; }
+      8% { opacity: 1; }
+      25% { opacity: 1; }
+      33% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    /* Dark overlay for text readability */
+    .background-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.35);
+      z-index: -1;
+    }
+
+    body {
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    header {
+      background: linear-gradient(135deg, #ff9966, #ff5e62, #1e90ff);
+      background-size: 400% 400%;
+      animation: gradientMove 12s ease infinite;
+      color: white;
+      padding: 28px 20px;
+      box-shadow: 0 4px 12px rgba(30,144,255,0.12);
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    header h1 { margin: 0; font-size: 1.6rem; }
+    header p { margin: 6px 0 0; opacity: 0.95; }
+
+    main {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 20px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      animation: fadeIn 0.8s ease both;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    ol.top-dests > li { margin: 10px 0; font-weight: 600; }
+    ol.top-dests li .activities { margin: 8px 0 0; font-weight: 400; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    table th, table td {
+      border: 1px solid #e6edf8;
+      padding: 10px 12px;
+      text-align: left;
+    }
+    table th {
+      background: linear-gradient(180deg,#f7fbff,#eef6ff);
+    }
+    .images-row, .gallery-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .images-row img, .gallery-row img {
+      width: 32%;
+      border-radius: 10px;
+      object-fit: cover;
+      cursor: grab;
+      border: 4px solid #fff;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+      transition: transform 0.2s ease;
+      position: relative;
+    }
+    .images-row img:hover {
+      transform: scale(1.05);
+    }
+    .gallery-row img {
+      cursor: pointer;
+      width: 23%;
+    }
+    .drop-zone {
+      margin-top: 14px;
+      border: 2px dashed #1e90ff;
+      padding: 22px;
+      border-radius: 10px;
+      text-align: center;
+      background: linear-gradient(180deg,rgba(30,144,255,0.02),transparent);
+      color: #1e3b6b;
+      font-weight: 600;
+      min-height: 150px;
+      transition: background 0.3s ease;
+    }
+    .drop-zone img {
+      width: 100px;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+    .form-group { margin-bottom: 12px; display: flex; flex-direction: column; gap: 6px; }
+    label { font-weight: 600; font-size: 0.95rem; }
+    input[type="date"], select, input[type="range"], textarea {
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #dce9ff;
+      background: #fafcff;
+    }
+    .budget-output { font-weight: 700; color: var(--accent); }
+    audio, video {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 8px;
+      box-shadow: var(--shadow);
+      background: #000;
+    }
+    button {
+      background: var(--accent);
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      box-shadow: 0 4px 15px rgba(30,144,255,0.4);
+      transform: translateY(-2px);
+    }
+    footer {
+      margin-top: 22px;
+      padding: 18px 20px;
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    .img-overlay {
+      position: relative;
+      display: inline-block;
+    }
+    .img-overlay span {
+      position: absolute;
+      bottom: 6px;
+      left: 6px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .img-overlay:hover span {
+      opacity: 1;
+    }
+
+    /* Lightbox styles */
+    .lightbox {
+      position: fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background: rgba(0,0,0,0.8);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      animation: fadeInLightbox 0.4s ease forwards;
+      z-index: 1000;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius:12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      animation: zoomIn 0.4s ease forwards;
+    }
+    @keyframes fadeInLightbox { from {opacity:0;} to{opacity:1;} }
+    @keyframes zoomIn { from {transform:scale(0.8);} to {transform:scale(1);} }
+
+    @media (max-width:900px) {
+      .grid { grid-template-columns: 1fr; }
+      .images-row img, .gallery-row img { width: 48%; }
+    }
+    /* Card-style table on mobile */
+@media (max-width: 700px) {
+  table {
+    border: 0;
+  }
+
+  table thead {
+    display: none; /* Hide the table header */
+  }
+
+  table tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    background: #fff;
+  }
+
+  table td {
+    display: block;
+    text-align: right;
+    border-bottom: 1px dotted #ccc;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  table td::before {
+    content: attr(data-label); /* Pull the label from HTML */
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    text-align: left;
+  }
+
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Background slideshow -->
+  <div class="background-slideshow">
+    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="">
+    <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34" alt="">
+    <img src="https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba" alt="">
+    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" alt="">
+    <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1" alt="">
+    <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad" alt="">
+  </div>
+  <div class="background-overlay"></div>
+
+  <header>
+    <main style="max-width:1100px; margin:0 auto;">
+      <h1>My Dream Travel Destinations</h1>
+      <p>With lists, tables, images, drag-and-drop, audio, video, and a trip planner form.</p>
+    </main>
+  </header>
+
+  <main>
+    <div class="grid">
+      <!-- LEFT COLUMN -->
+      <section class="card">
+        <h2>Top Travel Destinations by Region</h2>
+        <!-- Europe -->
+        <h3>Europe</h3>
+        <ol class="top-dests">
+          <li>Rome, Italy <ul class="activities"><li>Explore Colosseum</li><li>Eat authentic pasta</li></ul></li>
+          <li>Paris, France <ul class="activities"><li>See Eiffel Tower</li><li>Visit Louvre</li></ul></li>
+          <li>Berlin, Germany <ul class="activities"><li>See Berlin Wall</li><li>Explore museums</li></ul></li>
+          <li>Switzerland <ul class="activities"><li>Ride scenic trains</li><li>Ski in Alps</li></ul></li>
+          <li>Greece <ul class="activities"><li>Visit Acropolis</li><li>Island hopping</li></ul></li>
+        </ol>
+
+        <!-- Americas -->
+        <h3>Americas</h3>
+        <ol class="top-dests">
+          <li>New York, USA <ul class="activities"><li>Statue of Liberty</li><li>Broadway show</li></ul></li>
+          <li>Rio de Janeiro, Brazil <ul class="activities"><li>Christ the Redeemer</li><li>Copacabana beach</li></ul></li>
+          <li>Peru <ul class="activities"><li>Machu Picchu</li><li>Explore Andes</li></ul></li>
+          <li>Canada <ul class="activities"><li>Niagara Falls</li><li>Rocky Mountains</li></ul></li>
+          <li>Mexico <ul class="activities"><li>Chichen Itza</li><li>Beach resorts</li></ul></li>
+        </ol>
+
+        <!-- Asia & Oceania -->
+        <h3>Asia & Oceania</h3>
+        <ol class="top-dests">
+          <li>Tokyo, Japan <ul class="activities"><li>Cherry blossoms</li><li>Shibuya Crossing</li></ul></li>
+          <li>Bali, Indonesia <ul class="activities"><li>Beach resorts</li><li>Rice terraces</li></ul></li>
+          <li>Sydney, Australia <ul class="activities"><li>Opera House</li><li>Bondi Beach</li></ul></li>
+          <li>Thailand <ul class="activities"><li>Bangkok temples</li><li>Island hopping</li></ul></li>
+          <li>New Zealand <ul class="activities"><li>Fiordland</li><li>Adventure sports</li></ul></li>
+        </ol>
+
+        <!-- New comparison table -->
+        <h3>Destination Comparison</h3>
+        <table>
+          <tr>
+            <th>Place</th>
+            <th>Best Time to Visit</th>
+            <th>Budget (USD)</th>
+            <th>Rating</th>
+          </tr>
+          <tr>
+            <td>Rome, Italy</td>
+            <td>April - June</td>
+            <td>$2000</td>
+            <td>★★★★★</td>
+          </tr>
+          <tr>
+            <td>Tokyo, Japan</td>
+            <td>March - May</td>
+            <td>$2500</td>
+            <td>★★★★★</td>
+          </tr>
+        </table>
+      </section>
+      
+      <!-- RIGHT COLUMN -->
+      <section class="card">
+        <h2>Drag-and-Drop Travel Gallery</h2>
+        <div class="images-row" id="draggable-images">
+          <img src="https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba" draggable="true" alt="Rome">
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" draggable="true" alt="Paris">
+          <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34" draggable="true" alt="New York">
+          <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1" draggable="true" alt="Tokyo">
+        </div>
+
+        <div class="drop-zone" id="drop-zone">Drop your favorite destinations here</div>
+      </section>
+    </div>
+
+    <!-- FULL WIDTH GALLERY WITH LIGHTBOX -->
+    <section class="card">
+      <h2>Gallery by Region (click to enlarge)</h2>
+
+      <h3>Europe</h3>
+      <div class="gallery-row">
+        <img src="https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba" alt="Rome">
+        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" alt="Paris">
+        <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad" alt="Berlin">
+        <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34" alt="Switzerland">
+      </div>
+
+      <h3>Americas</h3>
+      <div class="gallery-row">
+        <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34" alt="New York">
+        <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1" alt="Rio">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Peru">
+        <img src="https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba" alt="Canada">
+      </div>
+
+      <h3>Asia & Oceania</h3>
+      <div class="gallery-row">
+        <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1" alt="Tokyo">
+        <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad" alt="Bali">
+        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" alt="Sydney">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Thailand">
+      </div>
+    </section>
+
+    <!-- Trip Planner Form -->
+    <section class="card">
+      <h2>Plan Your Trip</h2>
+      <form>
+        <div class="form-group">
+          <label for="season">Preferred Travel Season:</label>
+          <select id="season" name="season">
+            <option value="">--Select Season--</option>
+            <option value="spring">Spring</option>
+            <option value="summer">Summer</option>
+            <option value="autumn">Autumn</option>
+            <option value="winter">Winter</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="trip-date">Planned Trip Date:</label>
+          <input type="date" id="trip-date" name="trip-date">
+        </div>
+        <div class="form-group">
+          <label for="budget">Budget Preference ($500 - $5000): <span id="budget-output" class="budget-output">2750</span></label>
+          <input type="range" id="budget" name="budget" min="500" max="5000" step="50" value="2750" oninput="document.getElementById('budget-output').textContent = this.value">
+        </div>
+        <button type="submit">Submit Plan</button>
+      </form>
+    </section>
+
+    <!-- Audio and Video Section -->
+    <section class="card">
+      <h2>Travel Vibes</h2>
+      <p>Enjoy some relaxing travel tunes while exploring this page:</p>
+      <audio controls loop>
+        <source src="Makhna-320kbps.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+      <p>Watch a short travel video:</p>
+      <video controls>
+        <source src="Untitled video - Made with Clipchamp (3).mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </section>
+
+    <!-- Lightbox element -->
+    <div class="lightbox" id="lightbox">
+      <img src="" alt="Enlarged image">
+    </div>
+
+  </main>
+
+  <footer>
+    &copy; 2025 Travel Planner. All rights reserved.
+  </footer>
+
+  <script>
+    // Drag-and-drop
+    const draggables = document.querySelectorAll('#draggable-images img');
+    const dropZone = document.getElementById('drop-zone');
+
+    draggables.forEach(img => {
+      img.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', e.target.src);
+      });
+    });
+
+    dropZone.addEventListener('dragover', e => e.preventDefault());
+
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      const src = e.dataTransfer.getData('text/plain');
+      const img = document.querySelector(`#draggable-images img[src='${src}']`);
+      if(img) img.remove(); // Remove from original row
+      const newImg = document.createElement('img');
+      newImg.src = src;
+      dropZone.appendChild(newImg);
+    });
+
+    // Lightbox functionality
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = lightbox.querySelector('img');
+
+    document.querySelectorAll('.gallery-row img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightbox.style.display = 'flex';
+        lightboxImg.src = img.src;
+      });
+    });
+
+    lightbox.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+      lightboxImg.src = '';
+    });
+  </script>
+
+</body>
+</html>
